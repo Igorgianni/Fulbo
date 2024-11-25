@@ -80,7 +80,6 @@ function CreadorEquiposFutbol() {
     let equipo1 = [];
     let equipo2 = [];
 
-    // Distribuir jugadores inicialmente
     jugadoresOrdenados.forEach((jugador, index) => {
       if (index % 2 === 0) {
         equipo1.push(jugador);
@@ -89,14 +88,12 @@ function CreadorEquiposFutbol() {
       }
     });
 
-    // Función para calcular la diferencia total entre equipos
     const calcularDiferenciaTotal = (eq1, eq2) => {
       const diferenciaPromedio = Math.abs(calcularPromedioEquipo(eq1) - calcularPromedioEquipo(eq2));
       const diferenciaHabilidades = calcularDiferenciaHabilidades(eq1, eq2);
       return diferenciaPromedio + diferenciaHabilidades;
     };
 
-    // Intentar mejorar el equilibrio
     let mejorDiferencia = calcularDiferenciaTotal(equipo1, equipo2);
     let mejora = true;
     let iteraciones = 0;
@@ -108,7 +105,6 @@ function CreadorEquiposFutbol() {
 
       for (let i = 0; i < equipo1.length; i++) {
         for (let j = 0; j < equipo2.length; j++) {
-          // Intentar intercambiar jugadores
           const nuevoEquipo1 = [...equipo1];
           const nuevoEquipo2 = [...equipo2];
           [nuevoEquipo1[i], nuevoEquipo2[j]] = [nuevoEquipo2[j], nuevoEquipo1[i]];
@@ -188,21 +184,13 @@ function CreadorEquiposFutbol() {
 
         <div className="bg-gray-100 rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-center text-blue-700">Jugadores</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {jugadores.map((jugador, index) => (
-              <div key={index} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out">
-                <h3 className="font-bold text-lg mb-2 text-green-700">{jugador.nombre}</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {habilidades.map(({ clave, etiqueta, icono }) => (
-                    <span key={clave} className="text-sm bg-gray-200 rounded px-2 py-1 flex items-center">
-                      <span className="mr-1">{icono}</span>
-                      <span>{jugador[clave]}</span>
-                    </span>
-                  ))}
+              <div key={index} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col items-center justify-center">
+                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-2">
+                  {jugador.nombre.charAt(0).toUpperCase()}
                 </div>
-                <span className="mt-2 inline-block bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-semibold">
-                  General: {jugador.general}
-                </span>
+                <h3 className="font-bold text-lg text-center text-green-700">{jugador.nombre}</h3>
               </div>
             ))}
           </div>
@@ -222,27 +210,16 @@ function CreadorEquiposFutbol() {
             {equipos.map((equipo, equipoIndex) => (
               <div key={equipoIndex} className="bg-gray-100 rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-semibold mb-4 text-center text-blue-700">Equipo {equipoIndex + 1}</h2>
-                <div className="space-y-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {equipo.map((jugador, jugadorIndex) => (
-                    <div key={jugadorIndex} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out">
-                      <h3 className="font-bold text-lg mb-2 text-green-700">{jugador.nombre}</h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        {habilidades.map(({ clave, etiqueta, icono }) => (
-                          <span key={clave} className="text-sm bg-gray-200 rounded px-2 py-1 flex items-center">
-                            <span className="mr-1">{icono}</span>
-                            <span>{jugador[clave]}</span>
-                          </span>
-                        ))}
+                    <div key={jugadorIndex} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col items-center justify-center">
+                      <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold mb-2">
+                        {jugador.nombre.charAt(0).toUpperCase()}
                       </div>
-                      <span className="mt-2 inline-block bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-semibold">
-                        General: {jugador.general}
-                      </span>
+                      <h3 className="font-bold text-sm text-center text-green-700">{jugador.nombre}</h3>
                     </div>
                   ))}
                 </div>
-                <p className="mt-4 font-bold text-center text-lg text-green-700">
-                  Promedio del equipo: {calcularPromedioEquipo(equipo).toFixed(2)}
-                </p>
               </div>
             ))}
           </div>
