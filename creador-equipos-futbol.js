@@ -9,6 +9,19 @@ const habilidades = [
   { clave: 'estadoFisico', etiqueta: 'Estado Físico', icono: '🏃' }
 ];
 
+const jugadoresLegendarios = [
+  { nombre: 'Messi', imagen: 'https://i.imgur.com/1Vj1eLv.jpg' },
+  { nombre: 'Maradona', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' },
+  { nombre: 'Ronaldo', imagen: 'https://i.imgur.com/6IUj1Zs.jpg' },
+  { nombre: 'Cristiano', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
+  { nombre: 'Roberto Carlos', imagen: 'https://i.imgur.com/Wd5Lp0T.jpg' },
+  { nombre: 'Ronaldinho', imagen: 'https://i.imgur.com/Oi0Wh2d.jpg' },
+  { nombre: 'Zidane', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' },
+  { nombre: 'Pelé', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
+  { nombre: 'Beckham', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' },
+  { nombre: 'Cruyff', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' }
+];
+
 function CreadorEquiposFutbol() {
   const [jugadores, setJugadores] = useState([]);
   const [nuevoJugador, setNuevoJugador] = useState({
@@ -19,7 +32,8 @@ function CreadorEquiposFutbol() {
     defensa: 1,
     arquero: 1,
     estadoFisico: 1,
-    general: 0
+    general: 0,
+    imagen: ''
   });
   const [equipos, setEquipos] = useState([]);
 
@@ -39,6 +53,11 @@ function CreadorEquiposFutbol() {
       const jugadorActualizado = { ...prev, [nombre]: nombre === 'nombre' ? valor : Math.round(Number(valor)) };
       const { pase, tiro, regate, defensa, arquero, estadoFisico } = jugadorActualizado;
       jugadorActualizado.general = Math.round(((pase + tiro + regate + defensa + arquero + estadoFisico) / 6) * 10);
+      
+      // Asignar imagen de jugador legendario aleatoria
+      const jugadorLegendario = jugadoresLegendarios[Math.floor(Math.random() * jugadoresLegendarios.length)];
+      jugadorActualizado.imagen = jugadorLegendario.imagen;
+      
       return jugadorActualizado;
     });
   };
@@ -54,7 +73,8 @@ function CreadorEquiposFutbol() {
         defensa: 1,
         arquero: 1,
         estadoFisico: 1,
-        general: 0
+        general: 0,
+        imagen: ''
       });
     }
   };
@@ -135,7 +155,7 @@ function CreadorEquiposFutbol() {
     <div className="min-h-screen bg-gradient-to-b from-blue-700 to-blue-900 p-4">
       <div className="container mx-auto bg-white rounded-lg shadow-xl p-6">
         <h1 className="text-5xl font-bold mb-8 text-center text-blue-800 flex items-center justify-center">
-          <span className="mr-2">🇦🇷</span> Creador de Equipos Legendarios <span className="ml-2">⚽</span>
+          <span className="mr-2">⚽</span> Igor/Nico 2025 <span className="ml-2">⚽</span>
         </h1>
         
         <div className="mb-8 bg-blue-100 rounded-lg shadow-md p-6 border-2 border-blue-300">
@@ -187,8 +207,8 @@ function CreadorEquiposFutbol() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {jugadores.map((jugador, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-2 shadow-inner">
-                  {jugador.nombre.charAt(0).toUpperCase()}
+                <div className="w-24 h-24 rounded-full overflow-hidden mb-2 border-4 border-yellow-400">
+                  <img src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
                 </div>
                 <h3 className="font-bold text-lg text-center text-blue-800">{jugador.nombre}</h3>
               </div>
@@ -201,7 +221,7 @@ function CreadorEquiposFutbol() {
             onClick={generarEquipos}
             className="px-10 py-4 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-2xl font-bold shadow-lg"
           >
-            Generar Equipos Legendarios
+            Generar Equipos
           </button>
         </div>
 
@@ -213,8 +233,8 @@ function CreadorEquiposFutbol() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {equipo.map((jugador, jugadorIndex) => (
                     <div key={jugadorIndex} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-xl font-bold mb-2 shadow-inner">
-                        {jugador.nombre.charAt(0).toUpperCase()}
+                      <div className="w-16 h-16 rounded-full overflow-hidden mb-2 border-2 border-yellow-400">
+                        <img src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
                       </div>
                       <h3 className="font-bold text-sm text-center text-blue-800">{jugador.nombre}</h3>
                     </div>
