@@ -16,10 +16,10 @@ const jugadoresLegendarios = [
   { nombre: 'Cristiano', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
   { nombre: 'Roberto Carlos', imagen: 'https://i.imgur.com/Wd5Lp0T.jpg' },
   { nombre: 'Ronaldinho', imagen: 'https://i.imgur.com/Oi0Wh2d.jpg' },
-  { nombre: 'Zidane', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' },
+  { nombre: 'Zidane', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
   { nombre: 'Pelé', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
-  { nombre: 'Beckham', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' },
-  { nombre: 'Cruyff', imagen: 'https://i.imgur.com/Oi8Vvxn.jpg' }
+  { nombre: 'Beckham', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
+  { nombre: 'Cruyff', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' }
 ];
 
 function CreadorEquiposFutbol() {
@@ -79,22 +79,6 @@ function CreadorEquiposFutbol() {
     }
   };
 
-  const calcularDiferenciaHabilidades = (equipo1, equipo2) => {
-    const sumaHabilidades = (equipo) => {
-      return habilidades.reduce((acc, { clave }) => {
-        acc[clave] = equipo.reduce((sum, jugador) => sum + jugador[clave], 0);
-        return acc;
-      }, {});
-    };
-
-    const suma1 = sumaHabilidades(equipo1);
-    const suma2 = sumaHabilidades(equipo2);
-
-    return habilidades.reduce((acc, { clave }) => {
-      return acc + Math.abs(suma1[clave] - suma2[clave]);
-    }, 0);
-  };
-
   const generarEquipos = () => {
     const jugadoresOrdenados = [...jugadores].sort((a, b) => b.general - a.general);
     let equipo1 = [];
@@ -110,8 +94,7 @@ function CreadorEquiposFutbol() {
 
     const calcularDiferenciaTotal = (eq1, eq2) => {
       const diferenciaPromedio = Math.abs(calcularPromedioEquipo(eq1) - calcularPromedioEquipo(eq2));
-      const diferenciaHabilidades = calcularDiferenciaHabilidades(eq1, eq2);
-      return diferenciaPromedio + diferenciaHabilidades;
+      return diferenciaPromedio;
     };
 
     let mejorDiferencia = calcularDiferenciaTotal(equipo1, equipo2);
@@ -149,6 +132,27 @@ function CreadorEquiposFutbol() {
   const calcularPromedioEquipo = (equipo) => {
     const suma = equipo.reduce((acc, jugador) => acc + jugador.general, 0);
     return equipo.length > 0 ? suma / equipo.length : 0;
+  };
+
+  const ImagenJugador = ({ src, alt, className }) => {
+    const [error, setError] = useState(false);
+
+    if (error) {
+      return (
+        <div className={`${className} flex items-center justify-center bg-gray-300 text-gray-600`}>
+          {alt.charAt(0).toUpperCase()}
+        </div>
+      );
+    }
+
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        onError={() => setError(true)}
+      />
+    );
   };
 
   return (
@@ -208,7 +212,7 @@ function CreadorEquiposFutbol() {
             {jugadores.map((jugador, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
                 <div className="w-24 h-24 rounded-full overflow-hidden mb-2 border-4 border-yellow-400">
-                  <img src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
+                  <ImagenJugador src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
                 </div>
                 <h3 className="font-bold text-lg text-center text-blue-800">{jugador.nombre}</h3>
               </div>
@@ -234,7 +238,7 @@ function CreadorEquiposFutbol() {
                   {equipo.map((jugador, jugadorIndex) => (
                     <div key={jugadorIndex} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
                       <div className="w-16 h-16 rounded-full overflow-hidden mb-2 border-2 border-yellow-400">
-                        <img src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
+                        <ImagenJugador src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
                       </div>
                       <h3 className="font-bold text-sm text-center text-blue-800">{jugador.nombre}</h3>
                     </div>
