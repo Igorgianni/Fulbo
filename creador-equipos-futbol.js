@@ -1,4 +1,21 @@
-const { useState, useEffect } = React;
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+
+interface Jugador {
+  id: number;
+  nombre: string;
+  imagen: string;
+  pase: number;
+  tiro: number;
+  regate: number;
+  defensa: number;
+  arquero: number;
+  estadoFisico: number;
+}
 
 const habilidades = [
   { clave: 'pase', etiqueta: 'Pase', icono: '🦶' },
@@ -9,96 +26,36 @@ const habilidades = [
   { clave: 'estadoFisico', etiqueta: 'Estado Físico', icono: '🏃' }
 ];
 
-const jugadoresLegendarios = [
-  { nombre: 'Messi', imagen: 'https://i.imgur.com/1Vj1eLv.jpg' },
-  { nombre: 'Maradona', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' },
-  { nombre: 'Cristiano Ronaldo', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
-  { nombre: 'Pelé', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
-  { nombre: 'Zidane', imagen: 'https://i.imgur.com/pCXpVi9.jpg' },
-  { nombre: 'Ronaldinho', imagen: 'https://i.imgur.com/Oi0Wh2d.jpg' },
-  { nombre: 'Beckham', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
-  { nombre: 'Cruyff', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' },
-  { nombre: 'Xavi', imagen: 'https://i.imgur.com/pCXpVi9.jpg' },
-  { nombre: 'Iniesta', imagen: 'https://i.imgur.com/1Vj1eLv.jpg' },
-  { nombre: 'Ronaldo Nazário', imagen: 'https://i.imgur.com/6IUj1Zs.jpg' },
-  { nombre: 'Roberto Carlos', imagen: 'https://i.imgur.com/Wd5Lp0T.jpg' },
-  { nombre: 'Buffon', imagen: 'https://i.imgur.com/pCXpVi9.jpg' },
-  { nombre: 'Casillas', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
-  { nombre: 'Neymar', imagen: 'https://i.imgur.com/1Vj1eLv.jpg' },
-  { nombre: 'Mbappé', imagen: 'https://i.imgur.com/6IUj1Zs.jpg' },
-  { nombre: 'Van Basten', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' },
-  { nombre: 'Platini', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
-  { nombre: 'Eusébio', imagen: 'https://i.imgur.com/Wd5Lp0T.jpg' },
-  { nombre: 'Puskas', imagen: 'https://i.imgur.com/pCXpVi9.jpg' }
-];
-
-function CreadorEquiposFutbol() {
-  const [jugadores, setJugadores] = useState([]);
-  const [nuevoJugador, setNuevoJugador] = useState({
-    nombre: '',
-    pase: 1,
-    tiro: 1,
-    regate: 1,
-    defensa: 1,
-    arquero: 1,
-    estadoFisico: 1,
-    general: 0,
-    imagen: ''
-  });
-  const [equipos, setEquipos] = useState([]);
-  const [imagenesDisponibles, setImagenesDisponibles] = useState([...jugadoresLegendarios]);
+export default function App() {
+  const [jugadores, setJugadores] = useState<Jugador[]>([]);
+  const [jugadoresSeleccionados, setJugadoresSeleccionados] = useState<number[]>([]);
+  const [equipos, setEquipos] = useState<Jugador[][]>([]);
 
   useEffect(() => {
-    const jugadoresGuardados = localStorage.getItem('jugadores');
-    if (jugadoresGuardados) {
-      setJugadores(JSON.parse(jugadoresGuardados));
-    }
+    fetch('/jugadores.json')
+      .then(response => response.json())
+      .then(data => setJugadores(data.jugadores))
+      .catch(error => console.error('Error cargando jugadores:', error));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('jugadores', JSON.stringify(jugadores));
-  }, [jugadores]);
-
-  const manejarCambioInput = (nombre, valor) => {
-    setNuevoJugador(prev => {
-      const jugadorActualizado = { ...prev, [nombre]: nombre === 'nombre' ? valor : Math.round(Number(valor)) };
-      const { pase, tiro, regate, defensa, arquero, estadoFisico } = jugadorActualizado;
-      jugadorActualizado.general = Math.round(((pase + tiro + regate + defensa + arquero + estadoFisico) / 6) * 10);
-      return jugadorActualizado;
-    });
-  };
-
-  const agregarJugador = () => {
-    if (nuevoJugador.nombre) {
-      let imagenAsignada;
-      if (imagenesDisponibles.length > 0) {
-        const indiceAleatorio = Math.floor(Math.random() * imagenesDisponibles.length);
-        imagenAsignada = imagenesDisponibles[indiceAleatorio];
-        setImagenesDisponibles(prev => prev.filter((_, index) => index !== indiceAleatorio));
-      } else {
-        imagenAsignada = jugadoresLegendarios[Math.floor(Math.random() * jugadoresLegendarios.length)];
-      }
-
-      const jugadorConImagen = { ...nuevoJugador, imagen: imagenAsignada.imagen };
-      setJugadores(prev => [...prev, jugadorConImagen]);
-      setNuevoJugador({
-        nombre: '',
-        pase: 1,
-        tiro: 1,
-        regate: 1,
-        defensa: 1,
-        arquero: 1,
-        estadoFisico: 1,
-        general: 0,
-        imagen: ''
-      });
-    }
+  const toggleJugadorSeleccionado = (jugadorId: number) => {
+    setJugadoresSeleccionados(prev => 
+      prev.includes(jugadorId)
+        ? prev.filter(id => id !== jugadorId)
+        : [...prev, jugadorId]
+    );
   };
 
   const generarEquipos = () => {
-    const jugadoresOrdenados = [...jugadores].sort((a, b) => b.general - a.general);
-    let equipo1 = [];
-    let equipo2 = [];
+    const jugadoresParaEquipos = jugadores.filter(jugador => jugadoresSeleccionados.includes(jugador.id));
+    const jugadoresOrdenados = [...jugadoresParaEquipos].sort((a, b) => {
+      const promedioA = (a.pase + a.tiro + a.regate + a.defensa + a.arquero + a.estadoFisico) / 6;
+      const promedioB = (b.pase + b.tiro + b.regate + b.defensa + b.arquero + b.estadoFisico) / 6;
+      return promedioB - promedioA;
+    });
+
+    const equipo1: Jugador[] = [];
+    const equipo2: Jugador[] = [];
 
     jugadoresOrdenados.forEach((jugador, index) => {
       if (index % 2 === 0) {
@@ -108,67 +65,15 @@ function CreadorEquiposFutbol() {
       }
     });
 
-    const calcularDiferenciaTotal = (eq1, eq2) => {
-      const diferenciaPromedio = Math.abs(calcularPromedioEquipo(eq1) - calcularPromedioEquipo(eq2));
-      return diferenciaPromedio;
-    };
-
-    let mejorDiferencia = calcularDiferenciaTotal(equipo1, equipo2);
-    let mejora = true;
-    let iteraciones = 0;
-    const maxIteraciones = 1000;
-
-    while (mejora && iteraciones < maxIteraciones) {
-      mejora = false;
-      iteraciones++;
-
-      for (let i = 0; i < equipo1.length; i++) {
-        for (let j = 0; j < equipo2.length; j++) {
-          const nuevoEquipo1 = [...equipo1];
-          const nuevoEquipo2 = [...equipo2];
-          [nuevoEquipo1[i], nuevoEquipo2[j]] = [nuevoEquipo2[j], nuevoEquipo1[i]];
-
-          const nuevaDiferencia = calcularDiferenciaTotal(nuevoEquipo1, nuevoEquipo2);
-
-          if (nuevaDiferencia < mejorDiferencia) {
-            equipo1 = nuevoEquipo1;
-            equipo2 = nuevoEquipo2;
-            mejorDiferencia = nuevaDiferencia;
-            mejora = true;
-            break;
-          }
-        }
-        if (mejora) break;
-      }
-    }
-
     setEquipos([equipo1, equipo2]);
   };
 
-  const calcularPromedioEquipo = (equipo) => {
-    const suma = equipo.reduce((acc, jugador) => acc + jugador.general, 0);
-    return equipo.length > 0 ? suma / equipo.length : 0;
-  };
-
-  const ImagenJugador = ({ src, alt, className }) => {
-    const [error, setError] = useState(false);
-
-    if (error) {
-      return (
-        <div className={`${className} flex items-center justify-center bg-gray-300 text-gray-600`}>
-          {alt.charAt(0).toUpperCase()}
-        </div>
-      );
-    }
-
-    return (
-      <img
-        src={src}
-        alt={alt}
-        className={className}
-        onError={() => setError(true)}
-      />
-    );
+  const calcularPromedio = (equipo: Jugador[]) => {
+    if (equipo.length === 0) return 0;
+    const suma = equipo.reduce((acc, jugador) => {
+      return acc + (jugador.pase + jugador.tiro + jugador.regate + jugador.defensa + jugador.arquero + jugador.estadoFisico) / 6;
+    }, 0);
+    return (suma / equipo.length).toFixed(2);
   };
 
   return (
@@ -178,90 +83,78 @@ function CreadorEquiposFutbol() {
           <span className="mr-2">⚽</span> Igor/Nico 2025 <span className="ml-2">⚽</span>
         </h1>
         
-        <div className="mb-8 bg-blue-100 rounded-lg shadow-md p-6 border-2 border-blue-300">
-          <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Agregar Jugador</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="col-span-full">
-              <label htmlFor="nombre" className="block text-lg font-medium text-blue-700 mb-1">Nombre del Jugador</label>
-              <input
-                id="nombre"
-                name="nombre"
-                value={nuevoJugador.nombre}
-                onChange={(e) => manejarCambioInput('nombre', e.target.value)}
-                placeholder="Ingrese el nombre del jugador"
-                className="mt-1 block w-full rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-lg"
-              />
-            </div>
-            {habilidades.map(({ clave, etiqueta, icono }) => (
-              <div key={clave}>
-                <label htmlFor={clave} className="block text-lg font-medium text-blue-700 mb-1">
-                  {icono} {etiqueta}
-                </label>
-                <input
-                  type="range"
-                  id={clave}
-                  min="1"
-                  max="10"
-                  value={nuevoJugador[clave]}
-                  onChange={(e) => manejarCambioInput(clave, e.target.value)}
-                  className="w-full"
-                />
-                <span className="text-lg text-blue-600 mt-1 block font-semibold">
-                  {nuevoJugador[clave]}
-                </span>
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center">Seleccionar Jugadores</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[300px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {jugadores.map((jugador) => (
+                  <div key={jugador.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`jugador-${jugador.id}`}
+                      checked={jugadoresSeleccionados.includes(jugador.id)}
+                      onCheckedChange={() => toggleJugadorSeleccionado(jugador.id)}
+                    />
+                    <label
+                      htmlFor={`jugador-${jugador.id}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <Avatar>
+                          <AvatarImage src={jugador.imagen} alt={jugador.nombre} />
+                          <AvatarFallback>{jugador.nombre.substring(0, 2)}</AvatarFallback>
+                        </Avatar>
+                        <span>{jugador.nombre}</span>
+                      </div>
+                    </label>
+                  </div>
+                ))}
               </div>
-            ))}
-            <div className="col-span-full flex justify-center mt-4">
-              <button
-                onClick={agregarJugador}
-                className="px-8 py-3 bg-yellow-400 text-blue-900 rounded-full hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-xl font-bold shadow-lg"
-              >
-                Agregar Jugador
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-blue-100 rounded-lg shadow-md p-6 mb-8 border-2 border-blue-300">
-          <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Jugadores</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {jugadores.map((jugador, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
-                <div className="w-24 h-24 rounded-full overflow-hidden mb-2 border-4 border-yellow-400">
-                  <ImagenJugador src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
-                </div>
-                <h3 className="font-bold text-lg text-center text-blue-800">{jugador.nombre}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
 
         <div className="text-center mb-8">
-          <button
-            onClick={generarEquipos}
-            className="px-10 py-4 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-2xl font-bold shadow-lg"
-          >
+          <Button onClick={generarEquipos} className="px-10 py-4 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-2xl font-bold shadow-lg">
             Generar Equipos
-          </button>
+          </Button>
         </div>
 
         {equipos.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {equipos.map((equipo, equipoIndex) => (
-              <div key={equipoIndex} className="bg-blue-100 rounded-lg shadow-md p-6 border-2 border-blue-300">
-                <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Equipo {equipoIndex + 1}</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {equipo.map((jugador, jugadorIndex) => (
-                    <div key={jugadorIndex} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
-                      <div className="w-16 h-16 rounded-full overflow-hidden mb-2 border-2 border-yellow-400">
-                        <ImagenJugador src={jugador
-.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
-                      </div>
-                      <h3 className="font-bold text-sm text-center text-blue-800">{jugador.nombre}</h3>
+              <Card key={equipoIndex}>
+                <CardHeader>
+                  <CardTitle className="text-2xl text-center">Equipo {equipoIndex + 1}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-[300px]">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      {equipo.map((jugador) => (
+                        <div key={jugador.id} className="flex flex-col items-center p-2 bg-gray-100 rounded-lg">
+                          <Avatar className="w-16 h-16 mb-2">
+                            <AvatarImage src={jugador.imagen} alt={jugador.nombre} />
+                            <AvatarFallback>{jugador.nombre.substring(0, 2)}</AvatarFallback>
+                          </Avatar>
+                          <h3 className="font-bold text-sm text-center">{jugador.nombre}</h3>
+                          <div className="mt-2 text-xs">
+                            {habilidades.map(({ clave, icono }) => (
+                              <div key={clave}>
+                                {icono} {jugador[clave as keyof Jugador]}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </ScrollArea>
+                  <p className="mt-4 font-bold text-center">
+                    Promedio del equipo: {calcularPromedio(equipo)}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
@@ -269,6 +162,4 @@ function CreadorEquiposFutbol() {
     </div>
   );
 }
-
-ReactDOM.render(<CreadorEquiposFutbol />, document.getElementById('root'));
 
