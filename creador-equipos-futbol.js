@@ -36,6 +36,7 @@ function CreadorEquiposFutbol() {
     imagen: ''
   });
   const [equipos, setEquipos] = useState([]);
+  const [imagenesDisponibles, setImagenesDisponibles] = useState([...jugadoresLegendarios]);
 
   useEffect(() => {
     const jugadoresGuardados = localStorage.getItem('jugadores');
@@ -53,18 +54,23 @@ function CreadorEquiposFutbol() {
       const jugadorActualizado = { ...prev, [nombre]: nombre === 'nombre' ? valor : Math.round(Number(valor)) };
       const { pase, tiro, regate, defensa, arquero, estadoFisico } = jugadorActualizado;
       jugadorActualizado.general = Math.round(((pase + tiro + regate + defensa + arquero + estadoFisico) / 6) * 10);
-      
-      // Asignar imagen de jugador legendario aleatoria
-      const jugadorLegendario = jugadoresLegendarios[Math.floor(Math.random() * jugadoresLegendarios.length)];
-      jugadorActualizado.imagen = jugadorLegendario.imagen;
-      
       return jugadorActualizado;
     });
   };
 
   const agregarJugador = () => {
     if (nuevoJugador.nombre) {
-      setJugadores(prev => [...prev, nuevoJugador]);
+      let imagenAsignada;
+      if (imagenesDisponibles.length > 0) {
+        const indiceAleatorio = Math.floor(Math.random() * imagenesDisponibles.length);
+        imagenAsignada = imagenesDisponibles[indiceAleatorio];
+        setImagenesDisponibles(prev => prev.filter((_, index) => index !== indiceAleatorio));
+      } else {
+        imagenAsignada = jugadoresLegendarios[Math.floor(Math.random() * jugadoresLegendarios.length)];
+      }
+
+      const jugadorConImagen = { ...nuevoJugador, imagen: imagenAsignada.imagen };
+      setJugadores(prev => [...prev, jugadorConImagen]);
       setNuevoJugador({
         nombre: '',
         pase: 1,
@@ -238,7 +244,8 @@ function CreadorEquiposFutbol() {
                   {equipo.map((jugador, jugadorIndex) => (
                     <div key={jugadorIndex} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
                       <div className="w-16 h-16 rounded-full overflow-hidden mb-2 border-2 border-yellow-400">
-                        <ImagenJugador src={jugador.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
+                        <ImagenJugador src={jugador
+.imagen} alt={jugador.nombre} className="w-full h-full object-cover" />
                       </div>
                       <h3 className="font-bold text-sm text-center text-blue-800">{jugador.nombre}</h3>
                     </div>
