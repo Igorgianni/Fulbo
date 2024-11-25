@@ -63,16 +63,62 @@ function CreadorEquiposFutbol() {
     const jugadoresOrdenados = [...jugadores].sort((a, b) => b.general - a.general);
     const equipo1 = [];
     const equipo2 = [];
+    let suma1 = 0;
+    let suma2 = 0;
 
-    jugadoresOrdenados.forEach((jugador, index) => {
-      if (index % 2 === 0) {
+    jugadoresOrdenados.forEach((jugador) => {
+      if (suma1 <= suma2) {
         equipo1.push(jugador);
+        suma1 += jugador.general;
       } else {
         equipo2.push(jugador);
+        suma2 += jugador.general;
       }
     });
 
+    // Asegurarse de que ambos equipos tengan el mismo número de jugadores
+    while (equipo1.length > equipo2.length) {
+      const jugador = equipo1.pop();
+      equipo2.push(jugador);
+      suma1 -= jugador.general;
+      suma2 += jugador.general;
+    }
+    while (equipo2.length > equipo1.length) {
+      const jugador = equipo2.pop();
+      equipo1.push(jugador);
+      suma2 -= jugador.general;
+      suma1 += jugador.general;
+    }
+
+    // Intentar equilibrar aún más intercambiando jugadores
+    let intercambios = 0;
+    const maxIntercambios = 100; // Límite para evitar bucles infinitos
+    while (Math.abs(suma1 - suma2) > 5 && intercambios < maxIntercambios) {
+      for (let i = 0; i < equipo1.length; i++) {
+        for (let j = 0; j < equipo2.length; j++) {
+          if (Math.abs((suma1 - equipo1[i].general + equipo2[j].general) - 
+                       (suma2 - equipo2[j].general + equipo1[i].general)) < 
+              Math.abs(suma1 - suma2)) {
+            // Intercambiar jugadores
+            const temp = equipo1[i];
+            equipo1[i] = equipo2[j];
+            equipo2[j] = temp;
+            suma1 = suma1 - temp.general + equipo1[i].general;
+            suma2 = suma2 - equipo1[i].general + temp.general;
+            intercambios++;
+            break;
+          }
+        }
+        if (Math.abs(suma1 - suma2) <= 5) break;
+      }
+    }
+
     setEquipos([equipo1, equipo2]);
+  };
+
+  const calcularPromedioEquipo = (equipo) => {
+    const suma = equipo.reduce((acc, jugador) => acc + jugador.general, 0);
+    return equipo.length > 0 ? suma / equipo.length : 0;
   };
 
   return (
@@ -181,7 +227,7 @@ function CreadorEquiposFutbol() {
                   ))}
                 </div>
                 <p className="mt-4 font-bold text-center text-lg text-green-700">
-                  Promedio del equipo: {(equipo.reduce((sum, jugador) => sum + jugador.general, 0) / equipo.length).toFixed(2)}
+                  Promedio del equipo: {calcularPromedioEquipo(equipo).toFixed(2)}
                 </p>
               </div>
             ))}
@@ -191,6 +237,9 @@ function CreadorEquiposFutbol() {
     </div>
   );
 }
+
+ReactDOM.render(<CreadorEquiposFutbol />, document.getElementById('root'));
+
 
 ReactDOM.render(<CreadorEquiposFutbol />, document.getElementById('root'));
 
