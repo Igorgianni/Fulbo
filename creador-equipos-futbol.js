@@ -59,57 +59,71 @@ function CreadorEquiposFutbol() {
     }
   };
 
+  const calcularDiferenciaHabilidades = (equipo1, equipo2) => {
+    const sumaHabilidades = (equipo) => {
+      return habilidades.reduce((acc, { clave }) => {
+        acc[clave] = equipo.reduce((sum, jugador) => sum + jugador[clave], 0);
+        return acc;
+      }, {});
+    };
+
+    const suma1 = sumaHabilidades(equipo1);
+    const suma2 = sumaHabilidades(equipo2);
+
+    return habilidades.reduce((acc, { clave }) => {
+      return acc + Math.abs(suma1[clave] - suma2[clave]);
+    }, 0);
+  };
+
   const generarEquipos = () => {
     const jugadoresOrdenados = [...jugadores].sort((a, b) => b.general - a.general);
-    const equipo1 = [];
-    const equipo2 = [];
-    let suma1 = 0;
-    let suma2 = 0;
+    let equipo1 = [];
+    let equipo2 = [];
 
-    jugadoresOrdenados.forEach((jugador) => {
-      if (suma1 <= suma2) {
+    // Distribuir jugadores inicialmente
+    jugadoresOrdenados.forEach((jugador, index) => {
+      if (index % 2 === 0) {
         equipo1.push(jugador);
-        suma1 += jugador.general;
       } else {
         equipo2.push(jugador);
-        suma2 += jugador.general;
       }
     });
 
-    // Asegurarse de que ambos equipos tengan el mismo número de jugadores
-    while (equipo1.length > equipo2.length) {
-      const jugador = equipo1.pop();
-      equipo2.push(jugador);
-      suma1 -= jugador.general;
-      suma2 += jugador.general;
-    }
-    while (equipo2.length > equipo1.length) {
-      const jugador = equipo2.pop();
-      equipo1.push(jugador);
-      suma2 -= jugador.general;
-      suma1 += jugador.general;
-    }
+    // Función para calcular la diferencia total entre equipos
+    const calcularDiferenciaTotal = (eq1, eq2) => {
+      const diferenciaPromedio = Math.abs(calcularPromedioEquipo(eq1) - calcularPromedioEquipo(eq2));
+      const diferenciaHabilidades = calcularDiferenciaHabilidades(eq1, eq2);
+      return diferenciaPromedio + diferenciaHabilidades;
+    };
 
-    // Intentar equilibrar aún más intercambiando jugadores
-    let intercambios = 0;
-    const maxIntercambios = 100; // Límite para evitar bucles infinitos
-    while (Math.abs(suma1 - suma2) > 5 && intercambios < maxIntercambios) {
+    // Intentar mejorar el equilibrio
+    let mejorDiferencia = calcularDiferenciaTotal(equipo1, equipo2);
+    let mejora = true;
+    let iteraciones = 0;
+    const maxIteraciones = 1000;
+
+    while (mejora && iteraciones < maxIteraciones) {
+      mejora = false;
+      iteraciones++;
+
       for (let i = 0; i < equipo1.length; i++) {
         for (let j = 0; j < equipo2.length; j++) {
-          if (Math.abs((suma1 - equipo1[i].general + equipo2[j].general) - 
-                       (suma2 - equipo2[j].general + equipo1[i].general)) < 
-              Math.abs(suma1 - suma2)) {
-            // Intercambiar jugadores
-            const temp = equipo1[i];
-            equipo1[i] = equipo2[j];
-            equipo2[j] = temp;
-            suma1 = suma1 - temp.general + equipo1[i].general;
-            suma2 = suma2 - equipo1[i].general + temp.general;
-            intercambios++;
+          // Intentar intercambiar jugadores
+          const nuevoEquipo1 = [...equipo1];
+          const nuevoEquipo2 = [...equipo2];
+          [nuevoEquipo1[i], nuevoEquipo2[j]] = [nuevoEquipo2[j], nuevoEquipo1[i]];
+
+          const nuevaDiferencia = calcularDiferenciaTotal(nuevoEquipo1, nuevoEquipo2);
+
+          if (nuevaDiferencia < mejorDiferencia) {
+            equipo1 = nuevoEquipo1;
+            equipo2 = nuevoEquipo2;
+            mejorDiferencia = nuevaDiferencia;
+            mejora = true;
             break;
           }
         }
-        if (Math.abs(suma1 - suma2) <= 5) break;
+        if (mejora) break;
       }
     }
 
@@ -237,9 +251,6 @@ function CreadorEquiposFutbol() {
     </div>
   );
 }
-
-ReactDOM.render(<CreadorEquiposFutbol />, document.getElementById('root'));
-
 
 ReactDOM.render(<CreadorEquiposFutbol />, document.getElementById('root'));
 
