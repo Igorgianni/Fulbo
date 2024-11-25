@@ -10,16 +10,16 @@ const habilidades = [
 ];
 
 const jugadoresLegendarios = [
-  { nombre: 'Messi', imagen: 'https://i.imgur.com/1Vj1eLv.jpg' },
-  { nombre: 'Maradona', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' },
-  { nombre: 'Ronaldo', imagen: 'https://i.imgur.com/6IUj1Zs.jpg' },
-  { nombre: 'Cristiano', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
-  { nombre: 'Roberto Carlos', imagen: 'https://i.imgur.com/Wd5Lp0T.jpg' },
-  { nombre: 'Ronaldinho', imagen: 'https://i.imgur.com/Oi0Wh2d.jpg' },
-  { nombre: 'Zidane', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
-  { nombre: 'Pelé', imagen: 'https://i.imgur.com/8Hy8Wlm.jpg' },
-  { nombre: 'Beckham', imagen: 'https://i.imgur.com/VhHnhgr.jpg' },
-  { nombre: 'Cruyff', imagen: 'https://i.imgur.com/Ql6xjbt.jpg' }
+  { nombre: 'Messi', imagen: 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg' },
+  { nombre: 'Maradona', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Maradona-Mundial_86_con_la_copa.JPG/640px-Maradona-Mundial_86_con_la_copa.JPG' },
+  { nombre: 'Ronaldo', imagen: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg' },
+  { nombre: 'Pelé', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Pele_con_brasil_%28cropped%29.jpg/640px-Pele_con_brasil_%28cropped%29.jpg' },
+  { nombre: 'Zidane', imagen: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Zinedine_Zidane_by_Tasnim_03.jpg' },
+  { nombre: 'Ronaldinho', imagen: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Ronaldinho_in_2019.jpg' },
+  { nombre: 'Beckham', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/David_Beckham_in_2019.jpg/640px-David_Beckham_in_2019.jpg' },
+  { nombre: 'Cruyff', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Johan_Cruyff_1974c.jpg/640px-Johan_Cruyff_1974c.jpg' },
+  { nombre: 'Iniesta', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Andr%C3%A9s_Iniesta.jpg/640px-Andr%C3%A9s_Iniesta.jpg' },
+  { nombre: 'Xavi', imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Xavi_Hernandez_2022.jpg/640px-Xavi_Hernandez_2022.jpg' }
 ];
 
 function CreadorEquiposFutbol() {
