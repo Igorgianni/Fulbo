@@ -32,7 +32,7 @@ export default function App() {
   const [equipos, setEquipos] = useState<Jugador[][]>([]);
 
   useEffect(() => {
-    fetch('/jugadores.json')
+    fetch(`${import.meta.env.BASE_URL}jugadores.json`)
       .then(response => response.json())
       .then(data => setJugadores(data.jugadores))
       .catch(error => console.error('Error cargando jugadores:', error));
