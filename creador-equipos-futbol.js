@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { database, auth } from './firebaseConfig';
-import { ref, set, get, update } from "firebase/database";
-import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
+const { useState, useEffect } = React;
 
 const habilidades = [
   { clave: 'pase', etiqueta: 'Pase', icono: '🦶' },
@@ -27,8 +24,7 @@ function CreadorEquiposFutbol() {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Autenticar al usuario anónimamente
-    signInAnonymously(auth)
+    auth.signInAnonymously()
       .then(() => {
         console.log("Usuario autenticado anónimamente");
       })
@@ -36,8 +32,7 @@ function CreadorEquiposFutbol() {
         console.error("Error de autenticación:", error);
       });
 
-    // Escuchar cambios en el estado de autenticación
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUserId(user.uid);
         cargarJugadores();
@@ -50,8 +45,8 @@ function CreadorEquiposFutbol() {
   }, []);
 
   const cargarJugadores = () => {
-    const jugadoresRef = ref(database, 'jugadores');
-    get(jugadoresRef).then((snapshot) => {
+    const jugadoresRef = database.ref('jugadores');
+    jugadoresRef.on('value', (snapshot) => {
       if (snapshot.exists()) {
         const jugadoresData = snapshot.val();
         const jugadoresArray = Object.keys(jugadoresData).map(key => ({
@@ -61,8 +56,6 @@ function CreadorEquiposFutbol() {
         }));
         setJugadores(jugadoresArray);
       }
-    }).catch((error) => {
-      console.error("Error al cargar jugadores:", error);
     });
   };
 
@@ -85,15 +78,14 @@ function CreadorEquiposFutbol() {
 
   const agregarJugador = () => {
     if (nuevoJugador.nombre && userId) {
-      const jugadorRef = ref(database, `jugadores/${nuevoJugador.nombre}`);
+      const jugadorRef = database.ref(`jugadores/${nuevoJugador.nombre}`);
       const nuevoJugadorData = {};
       habilidades.forEach(({ clave }) => {
         nuevoJugadorData[clave] = { [userId]: nuevoJugador[clave] };
       });
-      set(jugadorRef, nuevoJugadorData)
+      jugadorRef.set(nuevoJugadorData)
         .then(() => {
           console.log("Jugador agregado con éxito");
-          cargarJugadores();
           setNuevoJugador({
             nombre: '',
             pase: 5,
@@ -112,11 +104,10 @@ function CreadorEquiposFutbol() {
 
   const actualizarCalificacion = (jugadorId, habilidad, valor) => {
     if (userId) {
-      const jugadorRef = ref(database, `jugadores/${jugadorId}/${habilidad}/${userId}`);
-      set(jugadorRef, valor)
+      const jugadorRef = database.ref(`jugadores/${jugadorId}/${habilidad}/${userId}`);
+      jugadorRef.set(valor)
         .then(() => {
           console.log("Calificación actualizada con éxito");
-          cargarJugadores();
         })
         .catch((error) => {
           console.error("Error al actualizar calificación:", error);
