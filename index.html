@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creador de Equipos de Fútbol - Igor/Nico 2025</title>
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <!-- React -->
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <!-- Tailwind CSS -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="root">Cargando...</div>
-    <script src="firebaseConfig.js"></script>
-    <script type="text/babel" src="app.js"></script>
+    <div id="root">Si ves este mensaje, React no se ha renderizado correctamente.</div>
+    <script type="text/babel" src="creador-equipos-futbol.js"></script>
+    <script>
+        console.log('HTML file loaded');
+        window.addEventListener('load', function() {
+            console.log('Window loaded');
+        });
+    </script>
 </body>
 </html>
 
