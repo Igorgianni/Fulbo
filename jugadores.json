@@ -1,0 +1,115 @@
+{
+  "jugadores": [
+    {
+      "id": 1,
+      "nombre": "Lionel Messi",
+      "imagen": "https://i.imgur.com/1Vj1eLv.jpg",
+      "pase": 10,
+      "tiro": 10,
+      "regate": 10,
+      "defensa": 7,
+      "arquero": 3,
+      "estadoFisico": 9
+    },
+    {
+      "id": 2,
+      "nombre": "Cristiano Ronaldo",
+      "imagen": "https://i.imgur.com/VhHnhgr.jpg",
+      "pase": 8,
+      "tiro": 10,
+      "regate": 9,
+      "defensa": 7,
+      "arquero": 3,
+      "estadoFisico": 10
+    },
+    {
+      "id": 3,
+      "nombre": "Neymar Jr.",
+      "imagen": "https://i.imgur.com/1Vj1eLv.jpg",
+      "pase": 9,
+      "tiro": 9,
+      "regate": 10,
+      "defensa": 6,
+      "arquero": 3,
+      "estadoFisico": 8
+    },
+    {
+      "id": 4,
+      "nombre": "Kevin De Bruyne",
+      "imagen": "https://i.imgur.com/pCXpVi9.jpg",
+      "pase": 10,
+      "tiro": 9,
+      "regate": 8,
+      "defensa": 7,
+      "arquero": 3,
+      "estadoFisico": 9
+    },
+    {
+      "id": 5,
+      "nombre": "Virgil van Dijk",
+      "imagen": "https://i.imgur.com/Wd5Lp0T.jpg",
+      "pase": 8,
+      "tiro": 7,
+      "regate": 7,
+      "defensa": 10,
+      "arquero": 3,
+      "estadoFisico": 9
+    },
+    {
+      "id": 6,
+      "nombre": "Manuel Neuer",
+      "imagen": "https://i.imgur.com/pCXpVi9.jpg",
+      "pase": 8,
+      "tiro": 5,
+      "regate": 5,
+      "defensa": 7,
+      "arquero": 10,
+      "estadoFisico": 8
+    },
+    {
+      "id": 7,
+      "nombre": "Kylian Mbappé",
+      "imagen": "https://i.imgur.com/6IUj1Zs.jpg",
+      "pase": 8,
+      "tiro": 9,
+      "regate": 9,
+      "defensa": 6,
+      "arquero": 3,
+      "estadoFisico": 10
+    },
+    {
+      "id": 8,
+      "nombre": "Joshua Kimmich",
+      "imagen": "https://i.imgur.com/Ql6xjbt.jpg",
+      "pase": 9,
+      "tiro": 7,
+      "regate": 8,
+      "defensa": 9,
+      "arquero": 4,
+      "estadoFisico": 9
+    },
+    {
+      "id": 9,
+      "nombre": "Harry Kane",
+      "imagen": "https://i.imgur.com/8Hy8Wlm.jpg",
+      "pase": 8,
+      "tiro": 10,
+      "regate": 7,
+      "defensa": 6,
+      "arquero": 3,
+      "estadoFisico": 8
+    },
+    {
+      "id": 10,
+      "nombre": "Erling Haaland",
+      "imagen": "https://i.imgur.com/6IUj1Zs.jpg",
+      "pase": 7,
+      "tiro": 10,
+      "regate": 8,
+      "defensa": 6,
+      "arquero": 3,
+      "estadoFisico": 10
+    }
+  ]
+}
+
