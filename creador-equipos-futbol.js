@@ -132,29 +132,29 @@ function CreadorEquiposFutbol() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-400 to-blue-500 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-700 to-blue-900 p-4">
       <div className="container mx-auto bg-white rounded-lg shadow-xl p-6">
-        <h1 className="text-4xl font-bold mb-8 text-center text-green-800 flex items-center justify-center">
-          <span className="mr-2">⚽</span> Igor/Nico 2025 <span className="ml-2">⚽</span>
+        <h1 className="text-5xl font-bold mb-8 text-center text-blue-800 flex items-center justify-center">
+          <span className="mr-2">🇦🇷</span> Creador de Equipos Legendarios <span className="ml-2">⚽</span>
         </h1>
         
-        <div className="mb-8 bg-gray-100 rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-center text-blue-700">Agregar Jugador</h2>
+        <div className="mb-8 bg-blue-100 rounded-lg shadow-md p-6 border-2 border-blue-300">
+          <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Agregar Jugador</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="col-span-full">
-              <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">Nombre del Jugador</label>
+              <label htmlFor="nombre" className="block text-lg font-medium text-blue-700 mb-1">Nombre del Jugador</label>
               <input
                 id="nombre"
                 name="nombre"
                 value={nuevoJugador.nombre}
                 onChange={(e) => manejarCambioInput('nombre', e.target.value)}
                 placeholder="Ingrese el nombre del jugador"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border-blue-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-lg"
               />
             </div>
             {habilidades.map(({ clave, etiqueta, icono }) => (
               <div key={clave}>
-                <label htmlFor={clave} className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor={clave} className="block text-lg font-medium text-blue-700 mb-1">
                   {icono} {etiqueta}
                 </label>
                 <input
@@ -166,7 +166,7 @@ function CreadorEquiposFutbol() {
                   onChange={(e) => manejarCambioInput(clave, e.target.value)}
                   className="w-full"
                 />
-                <span className="text-sm text-gray-500 mt-1 block">
+                <span className="text-lg text-blue-600 mt-1 block font-semibold">
                   {nuevoJugador[clave]}
                 </span>
               </div>
@@ -174,7 +174,7 @@ function CreadorEquiposFutbol() {
             <div className="col-span-full flex justify-center mt-4">
               <button
                 onClick={agregarJugador}
-                className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+                className="px-8 py-3 bg-yellow-400 text-blue-900 rounded-full hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-xl font-bold shadow-lg"
               >
                 Agregar Jugador
               </button>
@@ -182,15 +182,15 @@ function CreadorEquiposFutbol() {
           </div>
         </div>
 
-        <div className="bg-gray-100 rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-center text-blue-700">Jugadores</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="bg-blue-100 rounded-lg shadow-md p-6 mb-8 border-2 border-blue-300">
+          <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Jugadores</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {jugadores.map((jugador, index) => (
-              <div key={index} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col items-center justify-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-2">
+              <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-2 shadow-inner">
                   {jugador.nombre.charAt(0).toUpperCase()}
                 </div>
-                <h3 className="font-bold text-lg text-center text-green-700">{jugador.nombre}</h3>
+                <h3 className="font-bold text-lg text-center text-blue-800">{jugador.nombre}</h3>
               </div>
             ))}
           </div>
@@ -199,24 +199,24 @@ function CreadorEquiposFutbol() {
         <div className="text-center mb-8">
           <button
             onClick={generarEquipos}
-            className="px-8 py-3 bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-lg font-semibold"
+            className="px-10 py-4 bg-blue-600 text-white rounded-full hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 text-2xl font-bold shadow-lg"
           >
-            Generar Equipos Equilibrados
+            Generar Equipos Legendarios
           </button>
         </div>
 
         {equipos.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {equipos.map((equipo, equipoIndex) => (
-              <div key={equipoIndex} className="bg-gray-100 rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-blue-700">Equipo {equipoIndex + 1}</h2>
+              <div key={equipoIndex} className="bg-blue-100 rounded-lg shadow-md p-6 border-2 border-blue-300">
+                <h2 className="text-3xl font-semibold mb-4 text-center text-blue-800">Equipo {equipoIndex + 1}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {equipo.map((jugador, jugadorIndex) => (
-                    <div key={jugadorIndex} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col items-center justify-center">
-                      <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold mb-2">
+                    <div key={jugadorIndex} className="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300 ease-in-out flex flex-col items-center justify-center border-2 border-blue-200">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-xl font-bold mb-2 shadow-inner">
                         {jugador.nombre.charAt(0).toUpperCase()}
                       </div>
-                      <h3 className="font-bold text-sm text-center text-green-700">{jugador.nombre}</h3>
+                      <h3 className="font-bold text-sm text-center text-blue-800">{jugador.nombre}</h3>
                     </div>
                   ))}
                 </div>
