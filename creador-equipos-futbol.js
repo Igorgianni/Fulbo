@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { database, auth } from './firebaseConfig';
 import { ref, set, get, update } from "firebase/database";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
